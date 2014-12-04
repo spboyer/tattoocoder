@@ -1,0 +1,26 @@
+{{!< default}}
+
+<section class='welcome'>
+  <p>
+    <b>Hello!</b> <a href='/me/'>I'm Shayne</a> and I'm a Microsoft <a href='http://asp.net' target='_blank'>ASP.NET</a> MVP as well as a Mobile Services developer and avid community
+    speaker and contributor.
+  </p>
+</section>
+
+<main class="content" role="main">
+
+    {{#foreach posts}}
+
+    <article class="home {{post_class}}">
+        <p class="meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="dddd Do MMMM YYYY"}}</time></p>
+        <h2 class="post-title"><a href="{{url}}">{{{title}}}</a></h2>
+        <section class="post-excerpt">
+            <p>{{excerpt}}&hellip;</p>
+        </section>
+    </article>
+
+    {{/foreach}}
+
+    {{pagination}}
+
+</main>
