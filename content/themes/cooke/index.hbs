@@ -1,0 +1,36 @@
+{{!< default}}
+
+<section class='welcome'>
+  <p>
+    <b>Hello!</b> <a href='/me/'>I'm Shayne</a> and I'm an <a href='http://asp.net' target='_blank'>ASP.NET</a> MVP, mobile services developer, play in the cloud, community speaker and contributor.
+  </p>
+</section>
+
+<main class="content" role="main">
+
+    {{#foreach posts}}
+
+    <article class="home {{post_class}}">
+        <p class="meta"><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="dddd Do MMMM YYYY"}}</time></p>
+        <h2 class="post-title"><a href="{{url}}">{{{title}}}</a></h2>
+        <section class="post-excerpt">
+            <p>{{excerpt}}&hellip;</p>
+        </section>
+    </article>
+
+    {{/foreach}}
+
+    {{pagination}}
+
+    <br />
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Home Page -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-9862650918066922"
+         data-ad-slot="4220968632"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</main>
