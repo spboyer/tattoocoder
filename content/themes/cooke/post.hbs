@@ -5,6 +5,11 @@
 
 <main class="content" role="main">
     <article class="{{post_class}}">
+        {{#if image}}
+            <header class="post">
+                {{image}}
+            </header>
+        {{/if}}
 
         {{#post}}
 
