@@ -1,0 +1,17 @@
+{{!
+
+	BLOG COVER
+	- Configuration of this file is not required.
+
+}}
+
+	{{#if @blog.cover}}
+	<div id="cover" class="cover post indexfeature featured">
+		<div class="background" style="background-image: url('{{@blog.cover}}');"></div>
+		<header class="wrapper">
+			{{#if @blog.logo}}<img src="{{@blog.logo}}" class="profileimage" alt="{{@blog.title}}">{{/if}}
+			<p>{{@blog.description}}</p>
+		</header>
+		<i class="fa fa-chevron-down movedown"></i>
+	</div>
+	{{/if}}

@@ -1,0 +1,23 @@
+{{! 
+	
+	FOOTER
+	- Configuration of this file is not required. 
+
+}}
+
+	<footer class="wrapper">
+		<div class="inlinemenu">
+			<div class="graybar">
+				<div class="left"><i class="fa fa-bars"></i>Navigation</div>
+				<div class="right"><i class="fa fa-chevron-down"></i></div>
+			</div>
+			<div class="menu">
+				{{navigation}}
+			</div>
+		</div>
+		<div class="copyright">
+			Copyright &copy; <a href="{{@blog.url}}/">{{@blog.title}}</a>. {{date format="YYYY"}} &bull; All rights reserved.
+			<span class="ghost">Proudly published with <a href="http://ghost.org" target="_blank">Ghost</a>.</span>
+			<span class="ecko"><a href="http://ecko.me/themes/ghost/astro/" target="_blank">Astro Ghost Theme</a> by <a href="http://ecko.me/" target="_blank">EckoThemes</a>.</span>
+		</div>
+	</footer>

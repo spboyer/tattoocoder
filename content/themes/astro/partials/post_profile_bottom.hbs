@@ -1,0 +1,16 @@
+{{! 
+	
+	POST - PROFILE BOTTOM
+	- Configuration of this file is not required. 
+
+}}
+
+	<div class="postprofile">
+		{{#if author.image}}<img src="{{author.image}}" class="author" alt="{{author.name}}">{{/if}}
+		<div class="info">
+			<h4>{{author.name}}</h4>
+			<a href="{{author.website}}">{{author.website}}</a>
+			<p>{{author.bio}}</p>
+			{{> social_bottom }}
+		</div>
+	</div>

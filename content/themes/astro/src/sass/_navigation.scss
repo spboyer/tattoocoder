@@ -1,0 +1,186 @@
+/*
+	NAVIGATION STYLES
+*/
+
+.mainnav {
+	position: absolute;
+	z-index: 400;
+	top: 0;
+	right: 20px;
+
+	.navwrap:hover .menu,
+	.navwrap:hover .toggle {
+		opacity: 1;
+	}
+
+	.toggle {
+		display: inline-block;
+		padding: 30px 10px 30px 15px;
+		opacity: .6;
+		@include transition(opacity 0.1s ease-out);
+
+		i {
+			font-size: 24px;
+			vertical-align: middle;
+			color: #1f1b1b;
+		}
+	}
+
+	.menu {
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		opacity: 0;
+		@include transition(opacity 0.4s ease-out);
+
+		a {
+			font: 600 14px 'Open Sans', Arial, Sans-Serif;
+			display: block;
+			padding: 30px 10px;
+			text-transform: uppercase;
+			color: #7d7d7d;
+		}
+
+		li {
+			position: relative;
+			display: inline-block;
+			margin: 0;
+			padding: 0;
+		}
+
+		li:hover a {
+			color: #202020;
+		}
+
+		i {
+			margin-left: 5px;
+			color: #c6c8c8;
+		}
+
+		li ul {
+			position: absolute;
+			top: 70px;
+			right: -13px;
+			display: none;
+			width: 180px;
+			padding: 15px;
+			text-align: right;
+			background: #202020;
+			border-radius: 4px;
+
+			li a {
+				padding: 10px;
+				text-transform: none;
+				color: #eee !important;
+
+				&:hover {
+					color: #000;
+				}
+			}
+
+			&:before {
+				position: absolute;
+				top: -10px;
+				right: 20px;
+				width: 30px;
+				width: 0;
+				height: 20px;
+				height: 0;
+				content: '';
+				border-right: 10px solid transparent;
+				border-bottom: 10px solid #202020;
+				border-left: 10px solid transparent;
+			}
+		}
+
+		li:hover ul {
+			display: block;
+		}
+
+		li:hover i {
+			color: #000;
+		}
+	}
+
+	&.featured {
+		.toggle i {
+			color: #fff;
+		}
+
+		.menu {
+			a {
+				color: #c8c8c8;
+			}
+
+			li:hover a {
+				color: #fff;
+			}
+
+			ul li a {
+				color: #fff;
+
+				&:hover {
+					color: #000;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 860px) {
+		display: none;
+	}
+}
+
+.inlinemenu {
+	display: none;
+	overflow: hidden;
+	margin-bottom: 10px;
+	padding-bottom: 30px;
+	border-bottom: 1px solid #d7d7d7;
+
+	.graybar {
+		cursor: pointer;
+	}
+
+	.menu {
+		margin: 0;
+		padding: 0;
+	}
+
+	.menu li {
+		float: none;
+		margin: 25px 0;
+		list-style: none;
+
+		i {
+			margin-left: 15px;
+		}
+
+		a {
+			font-size: 18px;
+		}
+
+		ul {
+			padding: 0;
+		}
+
+		ul li {
+			margin: 10px 0;
+			padding: 0 0 0 10px;
+
+			a {
+				font-size: 15px;
+				color: #8e8e8e;
+			}
+		}
+	}
+
+	&:first-child {
+		margin-top: 0;
+	}
+
+	@media screen and (max-width: 906px) {
+		display: block;
+	}
+}

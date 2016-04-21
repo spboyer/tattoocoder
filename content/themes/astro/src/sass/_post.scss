@@ -1,0 +1,449 @@
+/*
+	POST STYLES
+*/
+
+.cover {
+	position: relative;
+	display: none;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	background-color: #2b2b2b;
+	@include background-image(linear-gradient(#2b2b2b, #000));
+
+	.background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: .6;
+		background-position: fixed;
+		background-size: cover;
+	}
+
+	&.featured {
+		display: block;
+	}
+
+	header {
+		position: relative;
+		top: 35%;
+		left: auto;
+		width: 90%;
+		max-width: 760px;
+
+		h2 {
+			margin-top: 0;
+			font: 600 22px 'Open Sans', Serif;
+			opacity: .8;
+			color: #e4e4e4;
+
+			a {
+				display: none;
+				color: #e4e4e4;
+			}
+
+			a:first-child {
+				display: inline-block;
+			}
+
+			a:hover {
+				color: #fff;
+			}
+		}
+
+		h1 {
+			font: 700 1.7em 'Domine', Serif;
+			font-size: 60px;
+			line-height: 86px;
+			color: #fff;
+			text-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+			-webkit-transform3d: translate(0, 0, 0);
+			-moz-transform3d: translate(0, 0, 0);
+			transform3d: translate(0, 0, 0);
+
+			a:hover {
+				border-bottom: 3px solid rgba(#fff, 0.2);
+			}
+		}
+
+		span {
+			opacity: .9;
+			color: #dedede;
+
+			a,
+			time {
+				font-weight: 600;
+				color: #fff;
+			}
+		}
+	}
+
+	.movedown {
+		font-size: 32px;
+		position: absolute;
+		bottom: 5%;
+		left: 50%;
+		cursor: pointer;
+		-webkit-animation: pulsate 4s ease-out;
+		-webkit-animation-iteration-count: infinite;
+		opacity: .6;
+		color: #eee;
+	}
+
+	@media screen and (max-width: 595px) {
+		height: auto;
+		min-height: none;
+		padding: 40px 0;
+
+		header {
+			padding: 80px 0 20px 0;
+
+			h1 a {
+				font: 700 1.2em 'Domine', Serif;
+				line-height: 22px;
+			}
+		}
+
+		.movedown {
+			display: none;
+		}
+	}
+
+	@media screen and (max-height: 640px) {
+		header {
+			top: 25%;
+		}
+	}
+}
+
+.posts {
+	@media screen and (max-width: 595px) {
+		padding-top: 10px;
+	}
+}
+
+.posts article {
+	clear: both;
+	padding: 65px 0 25px;
+	border-bottom: 1px solid #d7d7d7;
+
+	&.featured header {
+		display: none;
+	}
+
+	p {
+		overflow: hidden;
+	}
+
+	img[alt='featureimage'] {
+		display: none;
+	}
+
+	iframe {
+		margin: 30px 0;
+	}
+
+	header {
+		position: relative;
+
+		h1 {
+			margin: 30px 0;
+		}
+
+		h1 a {
+			position: relative;
+			padding: 10px 0;
+			color: #262b30;
+
+			&:hover {
+				color: #007cc3;
+			}
+		}
+
+		h2 {
+			font: 600 20px 'Open Sans', Serif;
+			color: #d5d5d5;
+
+			a {
+				display: none;
+				color: #d5d5d5;
+			}
+
+			a:first-child {
+				display: block;
+			}
+
+			a:hover {
+				color: #b3b3b3;
+			}
+		}
+
+		time {
+			font-weight: 600;
+			color: $accent_color;
+		}
+
+		i {
+			margin: 0 5px;
+		}
+
+		span {
+			color: #b6b6b6;
+		}
+
+		p {
+			margin: 30px 0 0;
+		}
+	}
+
+	hr {
+		height: 3px;
+	}
+
+	.feature {
+		display: none;
+	}
+
+	&.featured .feature {
+		position: absolute;
+		right: 0;
+		display: inline-block;
+		padding: 7px 15px;
+		color: #78a300;
+		background: #fff;
+		border-radius: 4px;
+
+		&:hover span {
+			display: inline;
+			opacity: 1;
+		}
+
+		span {
+			margin-right: 15px;
+			opacity: 0;
+			color: #78a300;
+		}
+
+		@media screen and (max-width: 595px) {
+			span {
+				display: none;
+			}
+		}
+	}
+
+	section {
+		margin: 0 0 30px;
+
+		& > p:first-child {
+			font-weight: 600;
+			margin: 40px 0 30px;
+			color: #1d1d1d;
+		}
+
+		ul,
+		ol {
+			line-height: 38px;
+			margin: 30px 0 0 6%;
+			padding: 0;
+
+			li {
+				margin: 10px 0;
+				padding: 0 0 0 3%;
+			}
+		}
+
+		ul li {
+			list-style: square;
+		}
+
+		.container {
+			position: relative;
+
+			.reference {
+				position: absolute;
+				top: 0;
+				left: -175px;
+				width: 150px;
+				padding: 20px 0 10px;
+				text-align: right;
+				border-top: 1px solid #dcd8d5;
+				border-bottom: 1px solid #dcd8d5;
+
+				@media screen and (max-width: 1140px) {
+					position: static;
+					width: 100%;
+					padding: 10px 0;
+					border-top: 0;
+				}
+			}
+
+			strong {
+				font: 600 14px 'Open Sans', Serif;
+			}
+
+			p {
+				font: 400 12px 'Open Sans', Serif;
+				line-height: 24px;
+				margin: 10px 0;
+			}
+
+			img:first-child,
+			pre:first-child {
+				margin: 0;
+			}
+		}
+	}
+
+	footer {
+		overflow: hidden;
+		margin: 30px 0;
+		padding: 0;
+
+		ul {
+			margin: 30px 0;
+			padding: 0;
+			list-style: none;
+
+			@media screen and (max-width: 600px) {
+				margin: 0;
+			}
+		}
+
+		.tags {
+			@media screen and (max-width: 600px) {
+				float: left;
+				clear: both;
+			}
+
+			li {
+				float: left;
+				margin: 0 0 15px 15px;
+
+				@media screen and (max-width: 600px) {
+					margin: 15px 15px 15px 0;
+				}
+			}
+		}
+
+		.share li {
+			float: left;
+			margin: 0 15px 15px 0;
+		}
+	}
+
+	.comments {
+		display: none;
+
+		.readmore {
+			margin: 20px 0 30px;
+			cursor: pointer;
+		}
+	}
+
+	@media screen and (max-width: 906px) {
+		padding-top: 120px;
+
+		&.featured {
+			padding-top: 60px;
+		}
+	}
+
+	@media screen and (max-width: 595px) {
+		padding-top: 100px;
+
+		&.featured {
+			padding-top: 0;
+		}
+	}
+}
+
+.postindex {
+	padding-top: 50px;
+
+	@media screen and (max-width: 906px) {
+		padding-top: 110px;
+	}
+
+	article.featured {
+		@media screen and (max-width: 906px) {
+			padding-top: 50px;
+		}
+
+		@media screen and (max-width: 595px) {
+			padding-top: 30px;
+		}
+	}
+}
+
+.pagination {
+	overflow: hidden;
+	padding: 50px 0;
+	border-bottom: 1px solid #dfdfdf;
+
+	.right i {
+		margin: 0 0 0 15px;
+	}
+
+	@media screen and (max-width: 405px) {
+		span {
+			display: none;
+		}
+
+		i,
+		.right i {
+			margin: 0;
+		}
+	}
+}
+
+.postindex .post {
+	padding: 50px 0;
+
+	&.featured header {
+		display: block;
+	}
+
+	header {
+		h1 {
+			margin: 20px 0;
+		}
+
+		h2 {
+			margin: 0;
+		}
+	}
+
+	@media screen and (max-width: 595px) {
+		padding: 30px 0;
+	}
+
+	@media screen and (max-width: 320px) {
+		header p {
+			display: none;
+		}
+	}
+}
+
+#g-comments {
+	width: 100% !important;
+
+	iframe {
+		width: 100% !important;
+	}
+}
+
+body.page-template {
+	.posts article section > *:first-child {
+		margin-top: 0;
+	}
+
+	.posts article header .meta {
+		display: none;
+	}
+
+	.cover header .meta{
+		display: none;
+	}
+}

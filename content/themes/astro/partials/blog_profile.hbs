@@ -1,0 +1,13 @@
+{{! 
+	
+	BLOG PROFILE
+	- Configuration of this file is not required. 
+
+}}
+
+	<div class="profile">
+		{{#if @blog.logo}}<img src="{{@blog.logo}}" class="profileimage" alt="user">{{/if}}
+		<h4>{{@blog.title}}</h4>
+		<p>{{@blog.description}}</p>
+		<hr>
+	</div>

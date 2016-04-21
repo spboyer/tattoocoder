@@ -1,0 +1,256 @@
+/*
+	BUTTON STYLES
+*/
+
+.smallbutton {
+	font: 600 14px 'Open Sans', Serif;
+	display: inline-block;
+	padding: 11px 26px;
+	@include transition(all 0.2s ease-in-out);
+	border-radius: 4px;
+
+	i {
+		margin-right: 15px;
+	}
+
+	&.blue {
+		color: #fff;
+		border: 2px solid #0066d9;
+		background: #0066d9;
+
+		&:hover {
+			color: #686868;
+			border: 2px solid #c3c2c9;
+			background: #fff;
+		}
+	}
+
+	&.lightgray {
+		color: #686868;
+		border: 2px solid #c3c2c9;
+		background: #fff;
+
+		&:hover {
+			color: #fff;
+			border: 2px solid #0066d9;
+			background: #0066d9;
+		}
+	}
+
+	&.solidgray {
+		color: #858585;
+		border: 2px solid #edebf3;
+		background: #edebf3;
+
+		&:hover {
+			color: #858585;
+			border: 2px solid #edebf3;
+			background: #fff;
+		}
+	}
+}
+
+.smallsocial {
+	display: block;
+	width: 32px;
+	height: 28px;
+	margin: 0 3px 10px;
+	text-align: center;
+	color: #606060;
+	background: #efefef;
+	border-radius: 36px;
+	@include transition(all 0.2s ease-in-out);
+
+	i {
+		position: relative;
+		vertical-align: -5px;
+	}
+
+	&.twitter:hover {
+		color: #fff;
+		background: $twitter_color;
+	}
+
+	&.facebook:hover {
+		color: #fff;
+		background: $facebook_color;
+	}
+
+	&.googleplus:hover {
+		color: #fff;
+		background: $google_color;
+	}
+
+	&.dribbble:hover {
+		color: #fff;
+		background: $dribbble_color;
+	}
+
+	&.github:hover {
+		color: #fff;
+		background: $github_color;
+	}
+
+	&.instagram:hover {
+		color: #fff;
+		background: $instagram_color;
+	}
+
+	&.youtube:hover {
+		color: #fff;
+		background: $youtube_color;
+	}
+
+	&.pinterest:hover {
+		color: #fff;
+		background: $pinterest_color;
+	}
+
+	&.linkedin:hover {
+		color: #fff;
+		background: $linkedin_color;
+	}
+
+	&.skype:hover {
+		color: #fff;
+		background: $skype_color;
+	}
+
+	&.tumblr:hover {
+		color: #fff;
+		background: $tumblr_color;
+	}
+
+	&.stackoverflow:hover {
+		color: #fff;
+		background: $stackoverflow_color;
+	}
+
+	&.rss:hover {
+		color: #fff;
+		background: $rss_color;
+	}
+}
+
+.social {
+	.twitter {
+		-webkit-box-shadow: inset 0 0 0 20px $twitter_color;
+		box-shadow: inset 0 0 0 20px $twitter_color;
+
+		&:hover {
+			color: $twitter_color;
+			-webkit-box-shadow: inset 0 0 0 2px $twitter_color;
+			box-shadow: inset 0 0 0 2px $twitter_color;
+		}
+	}
+
+	.facebook {
+		-webkit-box-shadow: inset 0 0 0 20px $facebook_color;
+		box-shadow: inset 0 0 0 20px $facebook_color;
+
+		&:hover {
+			color: $facebook_color;
+			-webkit-box-shadow: inset 0 0 0 2px $facebook_color;
+			box-shadow: inset 0 0 0 2px $facebook_color;
+		}
+	}
+
+	.github {
+		-webkit-box-shadow: inset 0 0 0 20px $github_color;
+		box-shadow: inset 0 0 0 20px $github_color;
+
+		&:hover {
+			color: $github_color;
+			-webkit-box-shadow: inset 0 0 0 2px $github_color;
+			box-shadow: inset 0 0 0 2px $github_color;
+		}
+	}
+
+	.rss {
+		-webkit-box-shadow: inset 0 0 0 20px $rss_color;
+		box-shadow: inset 0 0 0 20px $rss_color;
+
+		&:hover {
+			color: $rss_color;
+			-webkit-box-shadow: inset 0 0 0 2px $rss_color;
+			box-shadow: inset 0 0 0 2px $rss_color;
+		}
+	}
+
+	.youtube {
+		-webkit-box-shadow: inset 0 0 0 20px $youtube_color;
+		box-shadow: inset 0 0 0 20px $youtube_color;
+
+		&:hover {
+			color: $youtube_color;
+			-webkit-box-shadow: inset 0 0 0 2px $youtube_color;
+			box-shadow: inset 0 0 0 2px $youtube_color;
+		}
+	}
+
+	.dribbble {
+		-webkit-box-shadow: inset 0 0 0 20px $dribbble_color;
+		box-shadow: inset 0 0 0 20px $dribbble_color;
+
+		&:hover {
+			color: $dribbble_color;
+			-webkit-box-shadow: inset 0 0 0 2px $dribbble_color;
+			box-shadow: inset 0 0 0 2px $dribbble_color;
+		}
+	}
+
+	.googleplus {
+		-webkit-box-shadow: inset 0 0 0 20px $google_color;
+		box-shadow: inset 0 0 0 20px $google_color;
+
+		&:hover {
+			color: $google_color;
+			-webkit-box-shadow: inset 0 0 0 2px $google_color;
+			box-shadow: inset 0 0 0 2px $google_color;
+		}
+	}
+
+	.instagram {
+		-webkit-box-shadow: inset 0 0 0 20px $instagram_color;
+		box-shadow: inset 0 0 0 20px $instagram_color;
+
+		&:hover {
+			color: $instagram_color;
+			-webkit-box-shadow: inset 0 0 0 2px $instagram_color;
+			box-shadow: inset 0 0 0 2px $instagram_color;
+		}
+	}
+
+	.pinterest {
+		-webkit-box-shadow: inset 0 0 0 20px $pinterest_color;
+		box-shadow: inset 0 0 0 20px $pinterest_color;
+
+		&:hover {
+			color: $pinterest_color;
+			-webkit-box-shadow: inset 0 0 0 2px $pinterest_color;
+			box-shadow: inset 0 0 0 2px $pinterest_color;
+		}
+	}
+
+	.stackoverflow {
+		-webkit-box-shadow: inset 0 0 0 20px $stackoverflow_color;
+		box-shadow: inset 0 0 0 20px $stackoverflow_color;
+
+		&:hover {
+			color: $pinterest_color;
+			-webkit-box-shadow: inset 0 0 0 2px $stackoverflow_color;
+			box-shadow: inset 0 0 0 2px $stackoverflow_color;
+		}
+	}
+
+	.linkedin {
+		-webkit-box-shadow: inset 0 0 0 20px $linkedin_color;
+		box-shadow: inset 0 0 0 20px $linkedin_color;
+
+		&:hover {
+			color: $linkedin_color;
+			-webkit-box-shadow: inset 0 0 0 2px $linkedin_color;
+			box-shadow: inset 0 0 0 2px $linkedin_color;
+		}
+	}
+}

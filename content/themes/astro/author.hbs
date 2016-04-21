@@ -1,0 +1,22 @@
+{{!
+
+	AUTHOR TEMPLATE
+	- Configuration of this file is not required.
+
+}}
+{{!< default}}
+
+	{{> blog_profile}}
+
+	<section class="posts postindex wrapper">
+
+		<div class="notification">
+			<span class="ntitle">Author</span><span class="message">{{author.name}}</span>
+			<a href="{{@blog.url}}"><i class="fa fa-times"></i></a>
+		</div>
+
+		{{> loop}}
+
+		{{pagination}}
+
+	</section>

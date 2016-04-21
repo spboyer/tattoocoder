@@ -1,0 +1,40 @@
+{{!
+
+	POST TEMPLATE
+	- Configuration of this file is not required.
+
+}}
+{{!< default}}
+
+	{{#post}}
+
+	{{> post_flowbar}}
+
+	{{> post_profile_side}}
+
+	{{> post_cover}}
+
+	<section class="posts wrapper">
+		<article class="post {{post_class}}">
+
+			{{> post_header}}
+
+			<section class="postbody">
+				{{content}}
+			</section>
+
+			{{> post_footer}}
+
+			{{> post_profile_bottom}}
+
+			<div class="comments">
+				<span class="readmore smallbutton blue"><i class="fa fa-comments"></i>View Comments...</span>
+				<div id="disqus_thread"></div>
+				<div id="g-comments"></div>
+			</div>
+
+		</article>
+
+	</section>
+
+	{{/post}}

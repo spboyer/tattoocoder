@@ -1,0 +1,102 @@
+/*
+	FLOWBAR STYLES
+*/
+
+.flowbar {
+	position: fixed;
+	z-index: 100;
+	top: 0;
+	left: 0;
+	display: none;
+	width: 100%;
+	margin: 0;
+	padding: 20px 0 20px;
+	color: #ececf1;
+	background-color: #272727;
+	background-color: rgba(#272727, 0.9);
+	@include background-image(linear-gradient(rgba(#272727, 0.9), rgba(#383838, 0.9)));
+
+	h1,
+	h2 {
+		font: 700 18px 'Open Sans', Serif;
+		margin: 0;
+		padding: 0;
+		color: #fff;
+	}
+
+	h2 {
+		font: 600 18px 'Open Sans', Serif;
+		font-weight: 400;
+	}
+
+	.show {
+		display: block;
+	}
+
+	@media screen and (max-width: 790px) {
+		h1 {
+			display: none;
+		}
+	}
+
+	@media screen and (max-width: 675px) {
+		display: none !important;
+	}
+}
+
+.indexfeature {
+	.profileimage {
+		margin: 30px 0 20px;
+	}
+
+	p {
+		margin: 20px 0;
+		color: #fff;
+	}
+}
+
+body.paged .indexfeature {
+	display: none;
+}
+
+body.blogcover {
+	.cover .background {
+		opacity: .4;
+	}
+
+	&.home-template .profile {
+		display: none;
+	}
+
+	.profile {
+		display: none;
+	}
+
+	&.post-template .profile {
+		display: block;
+	}
+
+	&.home-template nav {
+		.toggle i {
+			color: #b0b0b0;
+		}
+
+		.menu {
+			a {
+				color: #c8c8c8;
+			}
+
+			li:hover a {
+				color: #fff;
+			}
+
+			ul li a {
+				color: #fff;
+
+				&:hover {
+					color: #000;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{{! 
+	
+	LOOP
+	- Configuration of this file is not required. 
+
+}}
+
+	{{#foreach posts}}
+		<article class="post {{#if @first}}first{{/if}} {{post_class}}">
+			<header>
+				<div class="feature"><span>Featured</span><i class="fa fa-bookmark fa-lg"></i></div>
+				<h2>
+					{{#foreach tags}}
+					<a href="{{url}}">{{name}}</a> 
+					{{/foreach}}
+				</h2>
+				<h1><a href="{{url}}">{{{title}}}</a></h1>
+				<span>
+					Posted {{#author}}<span class="postauthor">by<a href="{{url}}"> {{#if image}}<img class="smallprofile" src="{{image}}" alt="{{name}}">{{/if}}{{name}}</a></span>{{/author}} on <i class="fa fa-clock-o"></i><time datetime="{{date format='YYYY-MM-DD'}}">{{date format="MMMM Do, YYYY"}}</time>.
+				</span>
+				<p>{{excerpt characters="260"}}&hellip;</p>
+			</header>
+		</article>
+	{{/foreach}}

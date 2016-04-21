@@ -1,0 +1,14 @@
+{{! 
+	
+	POST - PROFILE SIDE
+	- Configuration of this file is not required. 
+
+}}
+
+	<div class="profile {{post_class}}">
+		{{#if author.image}}<img src="{{author.image}}" class="profileimage" alt="{{author.name}}">{{/if}}
+		<h4>{{author.name}}</h4>
+		{{> social_side }}
+		<p>{{author.bio}}</p>
+		<hr>
+	</div>

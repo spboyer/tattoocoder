@@ -1,0 +1,15 @@
+{{!
+
+	PAGINATION
+	- Configuration of this file is not required.
+
+}}
+
+	<div class="pagination">
+		{{#if next}}
+		<a href="{{page_url next}}" class="smallbutton lightgray right"><span>Older Posts</span><i class="fa fa-chevron-right"></i></a>
+		{{/if}}
+		{{#if prev}}
+		<a href="{{page_url prev}}" class="smallbutton lightgray left"><i class="fa fa-chevron-left"></i><span>Newer Posts</span></a>
+		{{/if}}
+	</div>

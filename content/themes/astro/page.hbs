@@ -1,0 +1,27 @@
+{{!
+
+	PAGE TEMPLATE
+	- Configuration of this file is not required.
+
+}}
+{{!< default}}
+
+	{{#post}}
+
+	{{> post_cover}}
+
+	<section class="posts wrapper">
+		<article class="post {{post_class}}">
+
+			{{> post_header}}
+
+			<section class="postbody">
+				{{content}}
+			</section>
+
+			{{> post_footer}}
+
+		</article>
+	</section>
+
+	{{/post}}

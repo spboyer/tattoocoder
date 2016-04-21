@@ -1,0 +1,311 @@
+/*
+	GLOBAL STYLES
+*/
+
+body,
+html {
+	font: 400 16px 'Open Sans', serif;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	color: #3b3b3b;
+	background: #fff;
+}
+
+a {
+	font-weight: 600;
+	text-decoration: none;
+	color: $accent_color;
+	border-bottom: 3px solid transparent;
+	@include transition(border 0.2s, color 0.2s ease-out);
+
+	&:hover {
+		color: $accent_dark_color;
+	}
+}
+
+h1 a:hover,
+p a:hover {
+	border-bottom: 3px solid #f1ece9;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font: 700 34px 'Domine', Serif;
+	line-height: 56px;
+	margin: 40px 0 30px;
+	color: #262b30;
+
+	i {
+		margin-right: 15px;
+	}
+}
+
+h2 {
+	font: 700 26px 'Domine', Serif;
+	margin: 40px 0 30px;
+}
+
+h3 {
+	font: 600 22px 'Open Sans', Serif;
+	margin: 40px 0 20px;
+}
+
+h4 {
+	font: 600 20px 'Open Sans', Serif;
+	margin: 20px 0 10px;
+}
+
+p {
+	line-height: 38px;
+	margin: 30px 0;
+	word-wrap: break-word;
+	color: #333332;
+}
+
+strong,
+em {
+	font-weight: 600;
+}
+
+img {
+	width: auto;
+	max-width: 100%;
+	margin: 30px 0;
+	border-radius: 4px;
+}
+
+hr {
+	width: 70%;
+	height: 3px;
+	margin: 30px auto;
+	border: 0;
+	background: #d8d6de;
+}
+
+code {
+	margin: 0 5px;
+	padding: 2px 6px;
+	border: 1px solid #e6e6e6;
+	background: #f3f3f3;
+	border-radius: 4px;
+}
+
+blockquote,
+q,
+cite {
+	font: italic 700 18px 'Domine', Serif;
+	line-height: 38px;
+	margin: 30px 0 30px 4%;
+	padding: 5px 4%;
+	border-left: 3px solid #c6d5e1;
+
+	p {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+table {
+	clear: both;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th {
+	font-weight: 700;
+	background: #f0f0f0;
+}
+
+td,
+th {
+	padding: .5rem;
+	text-align: left;
+	border: 1px solid #dbdbdb;
+}
+
+input:not([type=submit]):not([type=file]) {
+	font: 600 15px 'Open Sans', Serif;
+	padding: 8px 15px;
+	border: 2px solid #808080;
+	outline: 0;
+	background: #fff;
+	border-radius: 4px;
+	@include transition(all 0.2s ease-out);
+}
+
+input:not([type=submit]):not([type=file]):active,
+input:not([type=submit]):not([type=file]):focus {
+	border: 2px solid #2d75a2;
+}
+
+::-moz-selection {
+	color: #fff;
+	background: #2d75a2;
+	text-shadow: none;
+}
+
+::selection {
+	color: #fff;
+	background: #2d75a2;
+	text-shadow: none;
+}
+
+.title a {
+	position: fixed;
+	z-index: 200;
+	top: 13px;
+	left: 13px;
+	display: block;
+	padding: 9px 12px 6px;
+	color: #fff;
+	background: #29292a;
+	@include transition(background 0.6s ease-out);
+
+	&:hover {
+		background: #3287c1;
+	}
+
+	span {
+		display: inline-block;
+		margin-left: 15px;
+
+		@media screen and (max-width: 1140px) {
+			display: none;
+		}
+
+		@media screen and (max-width: 595px) {
+			display: inline-block;
+		}
+	}
+
+	&:hover span {
+		display: inline-block;
+		width: auto;
+	}
+
+	@media screen and (max-width: 906px) {
+		position: absolute;
+		position: absolute;
+		top: 30px;
+		left: 5%;
+		display: inline-block;
+		margin-top: 30px;
+	}
+}
+
+.wrapper {
+	width: 90%;
+	max-width: 760px;
+	margin: 0 auto;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.notification {
+	margin-top: 50px;
+	padding: 20px 25px;
+	background: #1c78be;
+	border-radius: 4px;
+
+	.ntitle {
+		font: 700 18px 'Open Sans', Serif;
+		padding-right: 20px;
+		color: #c4e2f8;
+		border-right: 2px solid #3285c4;
+	}
+
+	.message {
+		font: 700 18px 'Open Sans', Serif;
+		padding-left: 20px;
+		color: #fff;
+	}
+
+	a {
+		position: relative;
+		display: inline-block;
+		float: right;
+		margin-top: -3px;
+		padding: 4px 10px 3px;
+		color: #fff;
+		background: #0b4673;
+		border-radius: 30px;
+		@include transition(opacity 0.2s);
+
+		i {
+			margin-top: 3px;
+		}
+
+		&:hover {
+			opacity: .6;
+			color: #fff;
+		}
+	}
+}
+
+footer {
+	font: 400 13px 'Open Sans', Serif;
+	line-height: 34px;
+	padding: 25px 0;
+	text-align: center;
+	color: #a6a6a6;
+
+	span {
+		display: block;
+	}
+
+	a {
+		color: #5498dc;
+	}
+
+	.smallnav {
+		display: none;
+
+		@media screen and (max-width: 906px) {
+			display: block;
+		}
+	}
+}
+
+.smallprofile {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin: 0 6px 0 11px;
+	vertical-align: -4px;
+	border-radius: 20px;
+}
+
+.outside {
+	position: relative;
+	width: 120%;
+	margin-left: -10%;
+
+	& > * {
+		margin: 0;
+	}
+}
+
+.graybar {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	font-weight: 600;
+	overflow: hidden;
+	margin: 10px 0;
+	padding: 17px 20px 15px;
+	color: #abaeb6;
+	border-radius: 4px;
+	background: #eee;
+
+	i {
+		margin-right: 10px;
+	}
+}

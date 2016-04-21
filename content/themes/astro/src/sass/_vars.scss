@@ -1,0 +1,43 @@
+/*
+	STYLE VARIABLES
+*/
+
+
+/* THEME COLORS */
+$accent_color: #026ed2;
+$accent_dark_color: #0079ec;
+
+
+/* SOCIAL COLORS */
+$twitter_color: #55acee;
+$facebook_color: #3b5998;
+$google_color: #dd4b39;
+$dribbble_color: #ea4c89;
+$instagram_color: #3f729b;
+$github_color: #171515;
+$rss_color: #ee802f;
+$youtube_color: #c4302b;
+$pinterest_color: #c8232c;
+$linkedin_color: #0e76a8;
+$skype_color: #00aff0;
+$tumblr_color: #34526f;
+$stackoverflow_color: #fe7a15;
+
+
+/* MIXINS */
+@-webkit-keyframes pulsate {
+	0% {
+		opacity: 0.4;
+		bottom: 5%;
+	}
+
+	50% {
+		opacity: 1.0;
+		bottom: 7%;
+	}
+
+	100% {
+		opacity: 0.4;
+		bottom: 5%;
+	}
+}

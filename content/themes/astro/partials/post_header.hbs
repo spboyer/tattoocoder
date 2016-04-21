@@ -1,0 +1,19 @@
+{{! 
+	
+	POST - HEADER
+	- Configuration of this file is not required. 
+
+}}
+
+	<header>
+		<div class="feature"><span>Featured</span><i class="fa fa-bookmark fa-lg"></i></div>
+		<h2>
+			{{#foreach tags}}
+			<a href="{{url}}">{{name}}</a> 
+			{{/foreach}}
+		</h2>
+		<h1 id="posttitle">{{{title}}}</h1>
+		<span class="meta">
+			Posted by {{author}} on <i class="fa fa-clock-o"></i> <time datetime="{{date format="YYYY-MM-DD"}}">{{date format='MMMM Do, YYYY'}}</time>.
+		</span>
+	</header>
