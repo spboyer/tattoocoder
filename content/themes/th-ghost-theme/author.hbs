@@ -1,0 +1,45 @@
+{{!< default}}
+{{! The tag above means - insert everything in this file into the {body} of the default.hbs template }}
+
+{{! The big featured header }}
+
+{{! Everything inside the #author tags pulls data from the author }}
+{{#author}}
+
+{{! Header transparent}}
+{{> header}}
+
+<div class="profile container {{#if cover}}" style="background-image: url({{cover}}){{else}}{{/if}}">
+    <div class="hover"></div>
+    <article class="profile_item wrap">
+        <header class="profile_head">
+            {{#if image}}
+            <figure class="profile_image">
+                <div class="img" style="background-image: url({{image}})"><span class="hidden">{{name}}'s Picture</span></div>
+            </figure>
+            {{/if}}
+            <h1>{{name}}</h1>
+        </header>
+        <section class="profile_bio">
+            <p>{{bio}}</p>
+        </section>
+        <footer>
+            {{#if location}}<i class="profile_meta fa fa-location-arrow"></i><span class="profile_meta">{{location}}</span>{{/if}}
+            {{#if website}}<i class="profile_meta fa fa-link"></i><span class="profile_meta"><a href="{{website}}">{{website}}</a></span>{{/if}}
+            <i class="profile_meta fa fa-bar-chart"></i>
+            <span class="profile_meta">{{plural ../pagination.total empty='No posts' singular='% post' plural='% posts'}}</span>
+        </footer>
+    </article>
+</div>
+{{/author}}
+
+{{! The tag below includes the post loop - partials/loop.hbs }}
+<div class="main-wrapper">
+    <div class="content-wrapper">
+        {{> "loop"}}
+    </div>
+    {{> sidebar}}
+</div>
+
+{{! Previous/next page links - displayed on every page }}
+{{pagination}}
