@@ -32,15 +32,13 @@
 
     <div class="widget sidebar-featured">
         <h4 class="sidebar-featured-header">Must Read</h4>
-        {{#get "posts" limit="all" filter="featured:true"}}
-            <ul>
             {{#foreach posts}}
-                <li><a href="{{url}}">{{title}}</a></li>
+
+                {{#if featured}}
+                    <li><a href="{{url}}">{{title}}</a></li>
+                {{/if}}
+
             {{/foreach}}
-            </ul>
-        {{else}}
-            {{#if @error}}{{@error}}{{/if}}
-        {{/get}}
     </div>
 
     <hr/>
