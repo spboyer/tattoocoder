@@ -1,0 +1,52 @@
+{{! Articles }}
+{{! This is the post loop - each post will be output using this markup }}
+
+{{#is "home"}}
+    {{#foreach posts}}
+        <div class="article container">
+            <article class="article_content wrap" itemscope itemtype="http://schema.org/BlogPosting" role="article">
+                <header class="post_head post">
+                    <h2 class="post_title"><a href="{{url}}">{{{title}}}</a></h2>
+                    <time datetime="{{date format="DD MMMM YYYY"}}">{{date format="DD MMMM YYYY"}}</time>
+                </header>
+                <section class="article_text post">
+                    <p itemprop="description">{{excerpt words="120"}}...
+                        <a href="{{url}}" class="article_link-more fa fa-long-arrow-right"></a>
+                    </p>
+                </section>
+                {{#if tags}}
+                <footer class="post_tag">
+                    {{#foreach tags}}
+                    <a class="tag" href="{{url}}">{{name}}</a>
+                    {{/foreach}}
+                </footer>
+            {{/if}}
+            </article>
+            <hr />
+        </div>
+    {{/foreach}}
+{{else}}
+    {{#foreach posts}}
+        <div class="article container">
+            <article class="article_content wrap" itemscope itemtype="http://schema.org/BlogPosting" role="article">
+                <header class="post_head post">
+                    <h2 class="post_title"><a href="{{url}}">{{{title}}}</a></h2>
+                    <time datetime="{{date format="DD MMMM YYYY"}}">{{date format="DD MMMM YYYY"}}</time>
+                </header>
+                <section class="article_text post">
+                    <p itemprop="description">{{excerpt words="120"}}...
+                        <a href="{{url}}" class="article_link-more fa fa-long-arrow-right"></a>
+                    </p>
+                </section>
+                {{#if tags}}
+                <footer class="post_tag">
+                        {{#foreach tags}}
+                        <a class="tag" href="{{url}}">{{name}}</a>
+                        {{/foreach}}
+                </footer>
+                {{/if}}
+            </article>
+            <hr />
+        </div>
+    {{/foreach}}
+{{/is}}

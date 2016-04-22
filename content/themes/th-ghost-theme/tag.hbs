@@ -1,0 +1,32 @@
+{{!< default}}
+{{! The tag above means - insert everything in this file into the {body} of the default.hbs template }}
+
+{{! Header transparent}}
+{{> header}}
+
+<div class="tags">
+    <article class="tags_item wrap container">
+        <header class="tags_head">
+            <h1>{{tag.name}}</h1>
+        </header>
+        <section class="tags_description">
+            {{#if tag.description}}
+                	<p>{{tag.description}}</p>
+                {{else}}
+                	<p>A {{pagination.total}}-post collection</p>
+                {{/if}}
+        </section>
+    </article>
+</div>
+
+{{! The tag below includes the post loop - partials/loop.hbs }}
+<div class="main-wrapper">
+    <div class="content-wrapper">
+        {{> "loop"}}
+    </div>
+    {{> sidebar}}
+</div>
+
+
+{{! Previous/next page links - displayed on every page }}
+{{pagination}}
