@@ -2363,12 +2363,12 @@ footer a
 
 /* Troy's custom bits */
 
-#ad1, #ad3, #ad4
+#ad1, #ad3, #ad4, #ad5
 {
   background-color: #D2D2D2;
 }
 
-#ad1
+#ad1, #ad5
 {
   margin: 18px 0 38px;
   width: 300px;
@@ -2392,17 +2392,17 @@ footer a
   display: block;
 }
 
-  #ad3 iframe, #ad4 iframe
+  #ad3 iframe, #ad4 iframe, #ad5
   {
     padding: 0;
   }
 
-#ad4
+#ad4, #ad5
 {
   display: none;
 }
 
-#ad4
+#ad4, #ad5
 {
   margin: 5% auto 0 auto;
   width: 300px;
@@ -2431,11 +2431,21 @@ iframe.twitter-tweet
   {
     display: block;
   }
+
+  #ad5
+  {
+    display: block;
+  }
 }
 
 @media (min-width:0)and (max-width:24em)
 {
   #ad4
+  {
+    display: none;
+  }
+  
+  #ad5
   {
     display: none;
   }
