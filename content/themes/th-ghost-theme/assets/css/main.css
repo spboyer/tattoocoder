@@ -2392,17 +2392,17 @@ footer a
   display: block;
 }
 
-  #ad3 iframe, #ad4 iframe, #ad5
+  #ad3 iframe, #ad4 iframe
   {
     padding: 0;
   }
 
-#ad4, #ad5
+#ad4
 {
   display: none;
 }
 
-#ad4, #ad5
+#ad4
 {
   margin: 5% auto 0 auto;
   width: 300px;
@@ -2432,10 +2432,6 @@ iframe.twitter-tweet
     display: block;
   }
 
-  #ad5
-  {
-    display: block;
-  }
 }
 
 @media (min-width:0)and (max-width:24em)
@@ -2444,9 +2440,5 @@ iframe.twitter-tweet
   {
     display: none;
   }
-  
-  #ad5
-  {
-    display: none;
-  }
+
 }
