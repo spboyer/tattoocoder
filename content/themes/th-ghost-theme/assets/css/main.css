@@ -2409,6 +2409,17 @@ footer a
   height: 250px;
 }
 
+/* google ads */
+.gad
+{
+  height: 90px;
+  width: 728px;
+  max-width: 100%;
+  margin: 5% auto 0 auto;
+  background-color: #cec9c4;
+  display: block;
+}
+
 #disqus_thread
 {
   padding-top: 1.84615rem;
