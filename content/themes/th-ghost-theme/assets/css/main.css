@@ -2453,3 +2453,19 @@ iframe.twitter-tweet
   }
 
 }
+
+@media (min-width:0)and (max-width:730px)
+{
+  #gad
+  {
+    display: block;
+  }
+}
+
+@media (min-width:0)and (max-width:720px)
+{
+  #gad
+  {
+    display: none;
+  }
+}
