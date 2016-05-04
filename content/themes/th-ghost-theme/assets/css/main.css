@@ -2363,7 +2363,7 @@ footer a
 
 /* Troy's custom bits */
 
-#ad1, #ad3, #ad4, #ad5, #ad7
+#ad1, #ad3, #ad4, #ad5
 {
   background-color: #D2D2D2;
 }
@@ -2382,7 +2382,7 @@ footer a
   height: 600px;
 }
 
-#ad3, #ad6
+#ad3
 {
   height: 90px;
   width: 728px;
@@ -2392,17 +2392,17 @@ footer a
   display: block;
 }
 
-#ad3 iframe, #ad4 iframe, #ad6 iframe, #ad7 iframe
-{
-  padding: 0;
-}
+  #ad3 iframe, #ad4 iframe
+  {
+    padding: 0;
+  }
 
-#ad4, #ad7
+#ad4
 {
   display: none;
 }
 
-#ad4, #ad7
+#ad4
 {
   margin: 5% auto 0 auto;
   width: 300px;
@@ -2423,12 +2423,12 @@ iframe.twitter-tweet
 /* Banner ad has to go when the page is too narrow */
 @media (min-width:0)and (max-width:53em)
 {
-  #ad3, #ad6
+  #ad3
   {
     display: none;
   }
 
-  #ad4, #ad7
+  #ad4
   {
     display: block;
   }
@@ -2437,9 +2437,10 @@ iframe.twitter-tweet
 
 @media (min-width:0)and (max-width:24em)
 {
-  #ad4, #ad7
+  #ad4
   {
     display: none;
   }
 
 }
+
