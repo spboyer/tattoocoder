@@ -41,7 +41,7 @@ Install Node.js. (See [Supported Node.js versions](http://support.ghost.org/supp
 ```bash
 # Node v4.2+ LTS - recommended
 # Node v0.10.x and v0.12.x - supported
-#
+#  
 # Choose wisely
 ```
 
