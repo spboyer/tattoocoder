@@ -6,6 +6,7 @@ var Promise         = require('bluebird'),
     errors          = require('../errors'),
     utils           = require('./utils'),
     pipeline        = require('../utils/pipeline'),
+    i18n            = require('../i18n'),
 
     docName         = 'posts',
     allowedIncludes = [
@@ -36,9 +37,16 @@ posts = {
      * @returns {Promise<Posts>} Posts Collection with Meta
      */
     browse: function browse(options) {
-        var extraOptions = ['tag', 'author', 'status', 'staticPages', 'featured'],
-            permittedOptions = utils.browseDefaultOptions.concat(extraOptions),
+        var extraOptions = ['status'],
+            permittedOptions,
             tasks;
+
+        // Workaround to remove static pages from results
+        // TODO: rework after https://github.com/TryGhost/Ghost/issues/5151
+        if (options && options.context && (options.context.user || options.context.internal)) {
+            extraOptions.push('staticPages');
+        }
+        permittedOptions = utils.browseDefaultOptions.concat(extraOptions);
 
         /**
          * ### Model Query
@@ -99,7 +107,7 @@ posts = {
                 return {posts: [result.toJSON(options)]};
             }
 
-            return Promise.reject(new errors.NotFoundError('Post not found.'));
+            return Promise.reject(new errors.NotFoundError(i18n.t('errors.api.posts.postNotFound')));
         });
     },
 
@@ -146,7 +154,7 @@ posts = {
                 return {posts: [post]};
             }
 
-            return Promise.reject(new errors.NotFoundError('Post not found.'));
+            return Promise.reject(new errors.NotFoundError(i18n.t('errors.api.posts.postNotFound')));
         });
     },
 
@@ -198,24 +206,24 @@ posts = {
      *
      * @public
      * @param {{id (required), context,...}} options
-     * @return {Promise(Post)} Deleted Post
+     * @return {Promise}
      */
     destroy: function destroy(options) {
         var tasks;
 
         /**
-         * ### Model Query
-         * Make the call to the Model layer
-         * @param {Object} options
-         * @returns {Object} options
+         * @function deletePost
+         * @param  {Object} options
          */
-        function modelQuery(options) {
-            // Removing a post needs to include all posts.
-            options.status = 'all';
-            return posts.read(options).then(function (result) {
-                return dataProvider.Post.destroy(options).then(function () {
-                    return result;
-                });
+        function deletePost(options) {
+            var Post = dataProvider.Post,
+                data = _.defaults({status: 'all'}, options),
+                fetchOpts = _.defaults({require: true, columns: 'id'}, options);
+
+            return Post.findOne(data, fetchOpts).then(function () {
+                return Post.destroy(options).return(null);
+            }).catch(Post.NotFoundError, function () {
+                throw new errors.NotFoundError(i18n.t('errors.api.posts.postNotFound'));
             });
         }
 
@@ -224,21 +232,11 @@ posts = {
             utils.validate(docName, {opts: utils.idDefaultOptions}),
             utils.handlePermissions(docName, 'destroy'),
             utils.convertOptions(allowedIncludes),
-            modelQuery
+            deletePost
         ];
 
         // Pipeline calls each task passing the result of one to be the arguments for the next
-        return pipeline(tasks, options).then(function formatResponse(result) {
-            var deletedObj = result;
-
-            if (deletedObj.posts) {
-                _.each(deletedObj.posts, function (post) {
-                    post.statusChanged = true;
-                });
-            }
-
-            return deletedObj;
-        });
+        return pipeline(tasks, options);
     }
 };
 

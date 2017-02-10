@@ -7,30 +7,44 @@
 // allowed to access data via the API.
 var _          = require('lodash'),
     bookshelf  = require('bookshelf'),
-    config     = require('../../config'),
-    errors     = require('../../errors'),
-    filters    = require('../../filters'),
     moment     = require('moment'),
     Promise    = require('bluebird'),
-    sanitizer  = require('validator').sanitize,
+    uuid       = require('uuid'),
+    config     = require('../../config'),
+    db         = require('../../data/db'),
+    errors     = require('../../errors'),
+    filters    = require('../../filters'),
     schema     = require('../../data/schema'),
     utils      = require('../../utils'),
-    uuid       = require('node-uuid'),
+    labs       = require('../../utils/labs'),
     validation = require('../../data/validation'),
-    baseUtils  = require('./utils'),
-    pagination = require('./pagination'),
+    plugins    = require('../plugins'),
+    i18n       = require('../../i18n'),
 
-    ghostBookshelf;
+    ghostBookshelf,
+    proto;
 
 // ### ghostBookshelf
 // Initializes a new Bookshelf instance called ghostBookshelf, for reference elsewhere in Ghost.
-ghostBookshelf = bookshelf(config.database.knex);
+ghostBookshelf = bookshelf(db.knex);
 
 // Load the Bookshelf registry plugin, which helps us avoid circular dependencies
 ghostBookshelf.plugin('registry');
 
+// Load the Ghost access rules plugin, which handles passing permissions/context through the model layer
+ghostBookshelf.plugin(plugins.accessRules);
+
+// Load the Ghost filter plugin, which handles applying a 'filter' to findPage requests
+ghostBookshelf.plugin(plugins.filter);
+
+// Load the Ghost include count plugin, which allows for the inclusion of cross-table counts
+ghostBookshelf.plugin(plugins.includeCount);
+
 // Load the Ghost pagination plugin, which gives us the `fetchPage` method on Models
-ghostBookshelf.plugin(pagination);
+ghostBookshelf.plugin(plugins.pagination);
+
+// Cache an instance of the base model prototype
+proto = ghostBookshelf.Model.prototype;
 
 // ## ghostBookshelf.Model
 // The Base Model which other Ghost objects will inherit from,
@@ -49,6 +63,11 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
         return {
             uuid: uuid.v4()
         };
+    },
+
+    // When loading an instance, subclasses can specify default to fetch
+    defaultColumnsToFetch: function defaultColumnsToFetch() {
+        return [];
     },
 
     // Bookshelf `initialize` - declare a constructor-like method for model creation
@@ -88,16 +107,41 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
         this.set('updated_by', this.contextUser(options));
     },
 
-    // Base prototype properties will go here
-    // Fix problems with dates
-    fixDates: function fixDates(attrs) {
+    /**
+     * before we insert dates into the database, we have to normalize
+     * date format is now in each db the same
+     */
+    fixDatesWhenSave: function fixDates(attrs) {
         var self = this;
 
         _.each(attrs, function each(value, key) {
             if (value !== null
                     && schema.tables[self.tableName].hasOwnProperty(key)
                     && schema.tables[self.tableName][key].type === 'dateTime') {
-                // convert dateTime value into a native javascript Date object
+                attrs[key] = moment(value).format('YYYY-MM-DD HH:mm:ss');
+            }
+        });
+
+        return attrs;
+    },
+
+    /**
+     * all supported databases (pg, sqlite, mysql) return different values
+     *
+     * sqlite:
+     *   - knex returns a UTC String
+     * pg:
+     *   - has an active UTC session through knex and returns UTC Date
+     * mysql:
+     *   - knex wraps the UTC value into a local JS Date
+     */
+    fixDatesWhenFetch: function fixDates(attrs) {
+        var self = this;
+
+        _.each(attrs, function each(value, key) {
+            if (value !== null
+                && schema.tables[self.tableName].hasOwnProperty(key)
+                && schema.tables[self.tableName][key].type === 'dateTime') {
                 attrs[key] = moment(value).toDate();
             }
         });
@@ -121,24 +165,26 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
     // Get the user from the options object
     contextUser: function contextUser(options) {
         // Default to context user
-        if (options.context && options.context.user) {
+        if ((options.context && options.context.user) || (options.context && options.context.user === 0)) {
             return options.context.user;
         // Other wise use the internal override
         } else if (options.context && options.context.internal) {
             return 1;
+        } else if (options.context && options.context.external) {
+            return 0;
         } else {
-            errors.logAndThrowError(new Error('missing context'));
+            errors.logAndThrowError(new Error(i18n.t('errors.models.base.index.missingContext')));
         }
     },
 
     // format date before writing to DB, bools work
     format: function format(attrs) {
-        return this.fixDates(attrs);
+        return this.fixDatesWhenSave(attrs);
     },
 
     // format data and bool when fetching from DB
     parse: function parse(attrs) {
-        return this.fixBools(this.fixDates(attrs));
+        return this.fixBools(this.fixDatesWhenFetch(attrs));
     },
 
     toJSON: function toJSON(options) {
@@ -159,17 +205,14 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
             if (key.substring(0, 7) !== '_pivot_') {
                 // if include is set, expand to full object
                 var fullKey = _.isEmpty(options.baseKey) ? key : options.baseKey + '.' + key;
-                if (_.contains(self.include, fullKey)) {
+                if (_.includes(self.include, fullKey)) {
                     attrs[key] = relation.toJSON(_.extend({}, options, {baseKey: fullKey, include: self.include}));
                 }
             }
         });
 
-        return attrs;
-    },
-
-    sanitize: function sanitize(attr) {
-        return sanitizer(this.get(attr)).xss();
+        // @TODO upgrade bookshelf & knex and use serialize & toJSON to do this in a neater way (see #6103)
+        return proto.finalize.call(this, attrs);
     },
 
     // Get attributes that have been updated (values before a .save() call)
@@ -180,6 +223,10 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
     // Get a specific updated attribute value
     updated: function updated(attr) {
         return this.updatedAttributes()[attr];
+    },
+
+    hasDateChanged: function (attr) {
+        return moment(this.get(attr)).diff(moment(this.updated(attr))) !== 0;
     }
 }, {
     // ## Data Utility Functions
@@ -187,11 +234,14 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
     /**
      * Returns an array of keys permitted in every method's `options` hash.
      * Can be overridden and added to by a model's `permittedOptions` method.
-     * @return {Array} Keys allowed in the `options` hash of every model's method.
+     *
+     * importing: is used when import a JSON file or when migrating the database
+     *
+     * @return {Object} Keys allowed in the `options` hash of every model's method.
      */
     permittedOptions: function permittedOptions() {
         // terms to whitelist for all methods.
-        return ['context', 'include', 'transacting'];
+        return ['context', 'include', 'transacting', 'importing'];
     },
 
     /**
@@ -223,13 +273,24 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
 
     /**
      * ### Find All
-     * Naive find all fetches all the data for a particular model
+     * Fetches all the data for a particular model
      * @param {Object} options (optional)
      * @return {Promise(ghostBookshelf.Collection)} Collection of all Models
      */
     findAll: function findAll(options) {
         options = this.filterOptions(options, 'findAll');
-        return this.forge().fetchAll(options).then(function then(result) {
+        options.withRelated = _.union(options.withRelated, options.include);
+
+        var itemCollection = this.forge(null, {context: options.context});
+
+        // transforms fictive keywords like 'all' (status:all) into correct allowed values
+        if (this.processOptions) {
+            this.processOptions(options);
+        }
+
+        itemCollection.applyDefaultAndCustomFilters(options);
+
+        return itemCollection.fetchAll(options).then(function then(result) {
             if (options.include) {
                 _.each(result.models, function each(item) {
                     item.include = options.include;
@@ -262,44 +323,59 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
     findPage: function findPage(options) {
         options = options || {};
 
-        var self = this,
-            itemCollection = this.forge(),
-            tableName      = _.result(this.prototype, 'tableName'),
-            filterObjects = self.setupFilters(options);
+        var self             = this,
+            itemCollection   = this.forge(null, {context: options.context}),
+            tableName        = _.result(this.prototype, 'tableName'),
+            requestedColumns = options.columns;
+
+        // Set this to true or pass ?debug=true as an API option to get output
+        itemCollection.debug = options.debug && process.env.NODE_ENV !== 'production';
 
         // Filter options so that only permitted ones remain
         options = this.filterOptions(options, 'findPage');
 
-        // Extend the model defaults
-        options = _.defaults(options, this.findPageDefaultOptions());
+        // This applies default properties like 'staticPages' and 'status'
+        // And then converts them to 'where' options... this behaviour is effectively deprecated in favour
+        // of using filter - it's only be being kept here so that we can transition cleanly.
+        this.processOptions(options);
 
-        // Run specific conversion of model query options to where options
-        options = this.processOptions(itemCollection, options);
+        // Add Filter behaviour
+        itemCollection.applyDefaultAndCustomFilters(options);
 
-        // Prefetch filter objects
-        return Promise.all(baseUtils.filtering.preFetch(filterObjects)).then(function doQuery() {
-            // If there are `where` conditionals specified, add those to the query.
-            if (options.where) {
-                itemCollection.query('where', options.where);
-            }
+        // Handle related objects
+        // TODO: this should just be done for all methods @ the API level
+        options.withRelated = _.union(options.withRelated, options.include);
 
-            // Setup filter joins / queries
-            baseUtils.filtering.query(filterObjects, itemCollection);
+        // Ensure only valid fields/columns are added to query
+        // and append default columns to fetch
+        if (options.columns) {
+            options.columns = _.intersection(options.columns, this.prototype.permittedAttributes());
+            options.columns = _.union(options.columns, this.prototype.defaultColumnsToFetch());
+        }
 
-            // Handle related objects
-            // TODO: this should just be done for all methods @ the API level
-            options.withRelated = _.union(options.withRelated, options.include);
-
+        if (options.order) {
+            options.order = self.parseOrderOption(options.order, options.include);
+        } else if (self.orderDefaultRaw) {
+            options.orderRaw = self.orderDefaultRaw();
+        } else {
             options.order = self.orderDefaultOptions();
+        }
 
-            return itemCollection.fetchPage(options).then(function formatResponse(response) {
-                var data = {};
-                data[tableName] = response.collection.toJSON(options);
-                data.meta = {pagination: response.pagination};
+        return itemCollection.fetchPage(options).then(function formatResponse(response) {
+            var data   = {},
+                models = [];
 
-                return baseUtils.filtering.formatResponse(filterObjects, options, data);
+            options.columns = requestedColumns;
+            models = response.collection.toJSON(options);
+
+            // re-add any computed properties that were stripped out before the call to fetchPage
+            // pick only requested before returning JSON
+            data[tableName] = _.map(models, function transform(model) {
+                return options.columns ? _.pick(model, options.columns) : model;
             });
-        }).catch(errors.logAndThrowError);
+            data.meta = {pagination: response.pagination};
+            return data;
+        });
     },
 
     /**
@@ -324,11 +400,18 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
      * @return {Promise(ghostBookshelf.Model)} Edited Model
      */
     edit: function edit(data, options) {
-        var id = options.id;
+        var id = options.id,
+            model = this.forge({id: id});
+
         data = this.filterData(data);
         options = this.filterOptions(options, 'edit');
 
-        return this.forge({id: id}).fetch(options).then(function then(object) {
+        // We allow you to disable timestamps when run migration, so that the posts `updated_at` value is the same
+        if (options.importing) {
+            model.hasTimestamps = false;
+        }
+
+        return model.fetch(options).then(function then(object) {
             if (object) {
                 return object.save(data, options);
             }
@@ -346,6 +429,7 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
         data = this.filterData(data);
         options = this.filterOptions(options, 'add');
         var model = this.forge(data);
+
         // We allow you to disable timestamps when importing posts so that the new posts `updated_at` value is the same
         // as the import json blob. More details refer to https://github.com/TryGhost/Ghost/issues/1696
         if (options.importing) {
@@ -423,7 +507,7 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
             });
         };
 
-        slug = utils.safeString(base);
+        slug = utils.safeString(base, options);
 
         // If it's a user, let's try to cut it down (unless this is a human request)
         if (baseName === 'user' && options && options.shortSlug && slugTryCount === 1 && slug !== 'ghost-owner') {
@@ -431,12 +515,21 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
             slug = (slug.indexOf('-') > -1) ? slug.substr(0, slug.indexOf('-')) : slug;
         }
 
+        if (!_.has(options, 'importing') || !options.importing) {
+            // TODO: remove the labs requirement when internal tags is out of beta
+            // This checks if the first character of a tag name is a #. If it is, this
+            // is an internal tag, and as such we should add 'hash' to the beginning of the slug
+            if (labs.isSet('internalTags') && baseName === 'tag' && /^#/.test(base)) {
+                slug = 'hash-' + slug;
+            }
+        }
+
         // Check the filtered slug doesn't match any of the reserved keywords
         return filters.doFilter('slug.reservedSlugs', config.slugs.reserved).then(function then(slugList) {
             // Some keywords cannot be changed
             slugList = _.union(slugList, config.slugs.protected);
 
-            return _.contains(slugList, slug) ? slug + '-' + baseName : slug;
+            return _.includes(slugList, slug) ? slug + '-' + baseName : slug;
         }).then(function then(slug) {
             // if slug is empty after trimming use the model name
             if (!slug) {
@@ -445,6 +538,39 @@ ghostBookshelf.Model = ghostBookshelf.Model.extend({
             // Test for duplicate slugs.
             return checkIfSlugExists(slug);
         });
+    },
+
+    parseOrderOption: function (order, include) {
+        var permittedAttributes, result, rules;
+
+        permittedAttributes = this.prototype.permittedAttributes();
+        if (include && include.indexOf('count.posts') > -1) {
+            permittedAttributes.push('count.posts');
+        }
+        result = {};
+        rules = order.split(',');
+
+        _.each(rules, function (rule) {
+            var match, field, direction;
+
+            match = /^([a-z0-9_\.]+)\s+(asc|desc)$/i.exec(rule.trim());
+
+            // invalid order syntax
+            if (!match) {
+                return;
+            }
+
+            field = match[1].toLowerCase();
+            direction = match[2].toUpperCase();
+
+            if (permittedAttributes.indexOf(field) === -1) {
+                return;
+            }
+
+            result[field] = direction;
+        });
+
+        return result;
     }
 
 });
