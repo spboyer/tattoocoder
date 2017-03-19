@@ -1,40 +1,48 @@
 <div class="content-sidebar">
     <div class="widget sidebar-featured">
         <h4 class="sidebar-featured-header">Latest Projects</h4>
+
+        <a href="https://t.co/O6laj752qO" target="_blank">
+            <video width="300" height="250" autoplay loop>
+                <source src="https://video.twimg.com/tweet_video/C6XHm4UXEAAIj2x.mp4" type="video/mp4"> Your browser does not support the video tag.
+            </video>
+        </a>
+        <br />
         <a target="_blank" href="https://www.pluralsight.com/authors/shayne-boyer"><img width="100%" src="/content/images/static/pluralsight.png" alt=""></a>
-       <br/>
+        <br/>
         <ol>
             <li><a href="http://spboyer.me/pbpaspnetspboyer">Pluralsight: Play by Play - ASP.NET Core on any OS w/ John Papa &amp; Shayne Boyer</a></li>
             <li><a href="https://www.pluralsight.com/courses/play-by-play-angular-2-app-deployment-azure-git-john-papa-shayne-boyer">Pluralsight: Play by Play: Deploying an Angular 2 App to Azure with Git</a></li>
-              <li><a href="http://github.com/omnisharp/generator-aspnet" target="_blank">Yeoman Generators for ASP.NET Core</a></li>
+            <li><a href="http://github.com/omnisharp/generator-aspnet" target="_blank">Yeoman Generators for ASP.NET Core</a></li>
             <li><a href="http://tattoocoder.com/asp-net-core-slack-community/">ASP.NET Core Slack Community</a></li>
         </ol>
     </div>
-  <hr/>
+    <hr/> {{#is "home"}} {{else}}
+    <div class="widget sidebar-featured">
+        <h4 class="sidebar-featured-header">Shayne</h4>
+        <p>{{@blog.description}}
+            <a href="/me" class="article_link-more fa fa-long-arrow-right"></a>
+        </p>
+    </div>
 
-    {{#is "home"}}
-    {{else}}
-        <div class="widget sidebar-featured">
-            <h4 class="sidebar-featured-header">Shayne</h4>
-            <p>{{@blog.description}} <a href="/me" class="article_link-more fa fa-long-arrow-right"></a></p>
-        </div>
-
-        <hr/>
-    {{/is}}
+    <hr/> {{/is}}
 
     <style type="text/css">
         .sidebyside {
             display: inline-flex;
         }
+        
         .projects a {
             margin-bottom: 20px;
             display: block;
         }
+        
         .projects a.column {
             max-width: 49%;
             display: inline-block;
             vertical-align: middle;
         }
+        
         .projects a:hover {
             -webkit-transform: scale(1.05, 1.05);
             -moz-transform: scale(1.05, 1.05);
@@ -80,9 +88,9 @@
 
     <div class="sidebyside">
         <div id="ad2" class="panel" data-type="ad" data-publisher="tattoocoder.com" data-zone="sidebar" data-format="160x600"></div>
-       
-       
+
+
         <div id="ad7" class="panel" data-type="ad" data-publisher="tattoocoder.com" data-zone="sidebar" data-format="160x600"></div>
-    
+
     </div>
 </div>
