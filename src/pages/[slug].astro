@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate, getPostSlug, readingTime, sourceLabel } from '../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: getPostSlug(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} — TattooCoder`} description={post.data.description} canonicalPath={`/${getPostSlug(post)}/`}>
+  <main class="post-page">
+    <article>
+      <header class="post-hero">
+        <a class="back-link" href="/archive/"><- Archive</a>
+        <p class="eyebrow">{sourceLabel(post.data.source)} / {formatDate(post.data.pubDate)} / {readingTime(post.body)} min read</p>
+        <h1>{post.data.title}</h1>
+        {post.data.description && <p class="post-description">{post.data.description}</p>}
+        {
+          post.data.heroImage && (
+            <img class="hero-image" src={post.data.heroImage} alt="" loading="eager" />
+          )
+        }
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+      <footer class="post-source">
+        <p>
+          Source preserved from <a href={post.data.sourceUrl}>{sourceLabel(post.data.source)}</a>.
+        </p>
+      </footer>
+    </article>
+  </main>
+</BaseLayout>

@@ -1,15 +1,19 @@
-# Ghost Template for Azure
-Clone the repo and use Git Deploy for Azure App Service
+# TattooCoder
 
-## App Settings
+Astro rebuild of `tattoocoder.com`: Shayne Boyer’s developer field notes, stories, and lessons from building software.
 
-Key | Value | Descrition
------------- | ------------- | ------------
-APPINSIGHTS_INSTRUMENTATIONKEY | App Insights key | Used for tracking analytics, be sure to enable AppInsights for your appication
-SCM_REPOSITORY_PATH | D:\home\site\wwwroot | Sets the application to use the local disk (fast drive) for building application. This is faster than the VHD. Beneficial for cloning your repos (if large), npm install.
-emailUsername | | email address for notifications
-emailPassword | | password for email address
-emailService | Gmail | Visit http://support.ghost.org/mail for instructions
-siteName | value | 'http://' + process.env.siteName + '.azurewebsites.net';
-websiteUrl | http://value.com | If the App Setting 'websiteUrl' is set, Ghost will use that URL as base. If it isn't set, we'll go with the default sitename.
-WEBSITE_NODE_DEFAULT_VERSION | 6.9.0 | Minimum version supported.
+## Commands
+
+| Command | Action |
+| --- | --- |
+| `npm install` | Install dependencies |
+| `npm run import:content` | Import posts from the current Ghost site and public LinkedIn articles |
+| `npm run dev` | Start the Astro dev server |
+| `npm run build` | Build the static site into `dist/` |
+| `npm run preview` | Preview the production build locally |
+
+## Content
+
+Posts live in `src/content/blog`. The importer preserves original Ghost slugs so existing links like `/aspnet-slack-sign-up/` continue to work. Ghost-hosted images are downloaded into `public/content/images/imported` so the new static site does not depend on the old Ghost container.
+
+LinkedIn articles discovered from Shayne’s public profile are imported as first-class posts with `source: "linkedin"` and the original `sourceUrl` preserved in frontmatter.

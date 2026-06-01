@@ -1,0 +1,89 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+}
+
+const {
+  title = 'TattooCoder',
+  description = 'Shayne Boyer’s developer field notes, stories, and lessons from building software.',
+  canonicalPath = '/',
+} = Astro.props;
+
+const canonical = new URL(canonicalPath, Astro.site ?? 'https://tattoocoder.com').toString();
+const pathname = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      const storedTheme = localStorage.getItem('theme');
+      const theme = storedTheme || 'light';
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+    </script>
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="TattooCoder home">
+        <span class="brand-copy">
+          <strong>TattooCoder</strong>
+          <small>field notes</small>
+        </span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a class={pathname === '/' ? 'is-active' : ''} href="/#latest">Latest</a>
+        <a class={pathname.startsWith('/archive') ? 'is-active' : ''} href="/archive/">Archive</a>
+        <a href="/rss.xml">RSS</a>
+        <a href="https://github.com/spboyer" rel="me">GitHub</a>
+        <a class="nav-cta" href="https://www.linkedin.com/in/shayneboyer/" rel="me">LinkedIn</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">Dark</button>
+      </nav>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <div>
+        <p class="eyebrow">System operational</p>
+        <h2>Field notes stay online.</h2>
+      </div>
+      <p>
+        TattooCoder is Shayne Boyer’s archive of practical software stories, hard-won developer lessons,
+        and readable notes with personality. Find me as <a href="https://github.com/spboyer" rel="me">@spboyer</a>
+        on GitHub and <a href="https://x.com/spboyer" rel="me">@spboyer</a> on Twitter/X.
+      </p>
+    </footer>
+    <script is:inline>
+      const toggle = document.querySelector('[data-theme-toggle]');
+      const setTheme = (theme) => {
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        localStorage.setItem('theme', theme);
+        if (toggle) toggle.textContent = theme === 'light' ? 'Dark' : 'Light';
+      };
+
+      setTheme(document.documentElement.dataset.theme || 'light');
+      toggle?.addEventListener('click', () => {
+        setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
+      });
+    </script>
+  </body>
+</html>

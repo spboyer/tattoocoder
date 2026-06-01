@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate, getPostSlug, getPublishedPosts, readingTime, sourceLabel } from '../lib/posts';
+
+const posts = await getPublishedPosts();
+const [featured, ...rest] = posts;
+const latest = rest.slice(0, 8);
+const linkedInCount = posts.filter((post) => post.data.source === 'linkedin').length;
+const tags = [
+  ...new Set(posts.flatMap((post) => post.data.tags ?? []).filter(Boolean)),
+].slice(0, 14);
+---
+
+<BaseLayout title="TattooCoder — Shayne Boyer" canonicalPath="/">
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">~/shayne/field-notes</p>
+        <h1>
+          Developer field notes,
+          <span>with ink.</span>
+        </h1>
+        <p class="hero-lede">
+          Practical software stories, Azure scars, AI coding reflections, and lessons from building in
+          the open.
+        </p>
+        <div class="social-strip" aria-label="Social links">
+          <span>find me as</span>
+          <a href="https://github.com/spboyer" rel="me">@spboyer on GitHub</a>
+          <a href="https://x.com/spboyer" rel="me">@spboyer on Twitter/X</a>
+        </div>
+        <div class="hero-actions">
+          <a class="button primary" href="#latest">Read the latest stories</a>
+          <a class="button ghost" href="/archive/">Browse {posts.length} posts</a>
+        </div>
+      </div>
+
+      <aside class="terminal-card" aria-label="Archive status">
+        <div class="terminal-bar">
+          <span></span><span></span><span></span>
+          <strong>archive.sh</strong>
+        </div>
+        <pre><code>$ import --source ghost
+138 posts restored
+$ import --source linkedin
+{linkedInCount} articles restored
+$ deploy --target static
+ready for the next version</code></pre>
+      </aside>
+    </section>
+
+    <section class="stats-panel" aria-label="Archive summary">
+      <div>
+        <span>{posts.length}</span>
+        <p>published pieces</p>
+      </div>
+      <div>
+        <span>{linkedInCount}</span>
+        <p>LinkedIn articles imported</p>
+      </div>
+      <div>
+        <span>{tags.length}</span>
+        <p>active topic signals</p>
+      </div>
+    </section>
+
+    <section class="featured-grid">
+      <article class="featured-card">
+        <p class="eyebrow">Deep dive</p>
+        <h2><a href={`/${getPostSlug(featured)}/`}>{featured.data.title}</a></h2>
+        <p>{featured.data.description}</p>
+        <div class="post-meta">
+          <span>{formatDate(featured.data.pubDate)}</span>
+          <span>{readingTime(featured.body)} min read</span>
+          <span>{sourceLabel(featured.data.source)}</span>
+        </div>
+      </article>
+      <div class="tag-cloud" aria-label="Topics">
+        {tags.map((tag) => <span>{tag}</span>)}
+      </div>
+    </section>
+
+    <section class="post-section" id="latest">
+      <div class="section-heading">
+        <p class="eyebrow">Latest notes</p>
+        <h2>Fresh from the archive</h2>
+      </div>
+      <div class="post-list">
+        {
+          latest.map((post) => (
+            <article class="post-row">
+              <div>
+                <p class="post-kicker">{sourceLabel(post.data.source)} / {formatDate(post.data.pubDate)}</p>
+                <h3><a href={`/${getPostSlug(post)}/`}>{post.data.title}</a></h3>
+                <p>{post.data.description}</p>
+              </div>
+              <span class="read-time">{readingTime(post.body)} min</span>
+            </article>
+          ))
+        }
+      </div>
+      <a class="archive-link" href="/archive/">Open the full archive -></a>
+    </section>
+  </main>
+</BaseLayout>

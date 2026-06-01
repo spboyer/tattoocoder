@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate, getPostSlug, getPublishedPosts, readingTime, sourceLabel } from '../lib/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout title="Archive — TattooCoder" canonicalPath="/archive/">
+  <main class="archive-page">
+    <section class="page-intro">
+      <p class="eyebrow">All signals</p>
+      <h1>Archive</h1>
+      <p>{posts.length} posts, imported from the original Ghost site and public LinkedIn articles.</p>
+    </section>
+    <section class="archive-list" aria-label="All posts">
+      {
+        posts.map((post) => (
+          <article class="archive-item">
+            <p class="post-kicker">{sourceLabel(post.data.source)} / {formatDate(post.data.pubDate)} / {readingTime(post.body)} min</p>
+            <h2><a href={`/${getPostSlug(post)}/`}>{post.data.title}</a></h2>
+            {post.data.description && <p>{post.data.description}</p>}
+          </article>
+        ))
+      }
+    </section>
+  </main>
+</BaseLayout>
